@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1">
+    <header>
+        <identifier version="1" id="com.urbancode.air.module.PvcsRelease" name="PVCS-Release"/>
+        <description>
+            Provides a number of additional PVCS Release Engineering operations.
+        </description>
+        <tag>Repositories/Source/PVCS Release</tag>
+    </header>
+
+    <step-type name="Release Note From Label">
+        <description>Create an XML Release Note from a PVCS Label</description>
+
+        <properties>
+            <property name="pcliPath" required="true">
+                <property-ui
+                        type="textBox"
+                        label="PCLI Path"
+                        description="Path to the PCLI executable"/>
+            </property>
+
+            <property name="databasePath" required="true">
+                <property-ui
+                        type="textBox"
+                        label="Database Path"
+                        description="Path to the PVCS database"/>
+            </property>
+
+            <property name="projectPath" required="true">
+                <property-ui
+                        type="textBox"
+                        label="Project Path"
+                        description="Path to the PVCS project"/>
+            </property>
+
+            <property name="label" required="true">
+                <property-ui
+                        type="textBox"
+                        label="Label"
+                        description="The PVCS label to list revisions for"/>
+            </property>
+
+            <property name="entityPath" required="true">
+                <property-ui
+                        type="textBox"
+                        label="Entity Path"
+                        default-value="/"
+                        description="Project, folder, or  versioned file for which you want to list revisions"/>
+            </property>
+
+
+            <property name="user">
+                <property-ui
+                        type="textBox"
+                        label="User"
+                        description="Authentication user"/>
+            </property>
+
+            <property name="password">
+                <property-ui
+                        type="secureBox"
+                        label="Password"
+                        description="Authentication password"/>
+            </property>
+
+            <property name="outputFile" required="true">
+                <property-ui
+                        type="textBox"
+                        label="Output File"
+                        description="The file to write the release note to"/>
+            </property>
+
+            <property name="options" required="false">
+                <property-ui
+                        type="textAreaBox"
+                        label="Additional Options"
+                        hidden="true"
+                        description="A newline-separated list of additional options to pass to the command"/>
+            </property>
+
+            <property name="debug" required="false">
+                <property-ui
+                        type="checkBox"
+                        label="Debug Output"
+                        hidden="true"
+                        description="Select this option to display debug output during execution."/>
+            </property>
+
+        </properties>
+
+        <post-processing>
+            <![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put("Status", "Failure");
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+      ]]>
+        </post-processing>
+
+        <command program="${GROOVY_HOME}/bin/groovy">
+            <arg value="-cp"/>
+            <arg path="classes"/>
+            <arg file="release_note_from_label.groovy"/>
+            <arg file="${PLUGIN_INPUT_PROPS}"/>
+            <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+        </command>
+    </step-type>
+
+    <step-type name="Generic PCLI Command">
+        <description>Execute a Generic PCLI Command</description>
+
+        <properties>
+            <property name="pcliPath" required="true">
+                <property-ui
+                        type="textBox"
+                        label="PCLI Path"
+                        description="Path to the PCLI executable"/>
+            </property>
+
+            <property name="pcliCommand" required="true">
+                <property-ui
+                        type="textBox"
+                        label="PCLI Command"
+                        description="PCLI Command to execute, e.g. AddFiles"/>
+            </property>
+
+            <property name="databasePath" required="true">
+                <property-ui
+                        type="textBox"
+                        label="Database Path"
+                        description="Path to the PVCS database"/>
+            </property>
+
+            <property name="projectPath" required="true">
+                <property-ui
+                        type="textBox"
+                        label="Project Path"
+                        description="Path to the PVCS project"/>
+            </property>
+
+            <property name="entityPath" >
+                <property-ui
+                        type="textBox"
+                        label="Entity Path"
+                        description="Project, folder, or versioned file to apply the command to"/>
+            </property>
+
+
+            <property name="user">
+                <property-ui
+                        type="textBox"
+                        label="User"
+                        description="Authentication user"/>
+            </property>
+
+            <property name="password">
+                <property-ui
+                        type="secureBox"
+                        label="Password"
+                        description="Authentication password"/>
+            </property>
+
+            <property name="options" required="false">
+                <property-ui
+                        type="textAreaBox"
+                        label="Additional Options"
+                        description="A newline-separated list of additional options to pass to the command"/>
+            </property>
+
+            <property name="outputFile">
+                <property-ui
+                        type="textBox"
+                        label="Output File"
+                        description="The file to write the output of the command to"/>
+            </property>
+
+            <property name="debug" required="false">
+                <property-ui
+                        type="checkBox"
+                        label="Debug Output"
+                        hidden="true"
+                        description="Select this option to display debug output during execution."/>
+            </property>
+
+        </properties>
+
+        <post-processing>
+            <![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put("Status", "Failure");
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+      ]]>
+        </post-processing>
+
+        <command program="${GROOVY_HOME}/bin/groovy">
+            <arg value="-cp"/>
+            <arg path="classes"/>
+            <arg file="generic_pcli_command.groovy"/>
+            <arg file="${PLUGIN_INPUT_PROPS}"/>
+            <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+        </command>
+    </step-type>
+</plugin>

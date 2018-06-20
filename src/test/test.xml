@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><release name="" description="" system="" subsystem="" date="" version="1.0.1">
+<deployment>
+<file copy="true" destination="[PLEASE ENTER]" source="" version="1.0" type="rtf" name="/bridge/hlp/AfxCore.rtf"/>
+<file copy="true" destination="[PLEASE ENTER]" source="" version="1.0" type="h" name="/bridge/MainFrm.h"/>
+<file copy="true" destination="[PLEASE ENTER]" source="" version="1.0" type="bat" name="/bridge/MakeHelp.bat"/>
+</deployment>
+<rollback/>
+</release>
